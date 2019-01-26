@@ -29,19 +29,35 @@ function fetchDonationsError(error) {
 export function getDonations() {
     return (dispatch) => {
         dispatch(fetchDonations());
-        fetch(`${constants.apiUrl}${constants.appId}/v1/charity/${constants.charityIds[0]}/donations`, 
-            {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-            }})
-            .then((res) => res.json())
-            .then((donations) => {
-                console.log(donations);
-                dispatch(fetchDonationsSuccess(donations));
+        const donations = constants.charityIds.map((id) => {
+            return  fetch(`${constants.apiUrl}${constants.appId}/v1/charity/${id}/donations`, 
+                        {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                        }})
+        })
+        Promise.all(donations)
+            .then((responses) => {
+                Promise.all(responses.map((resp) => resp.json()))
+                    .then((data) => {
+                        let donatList = [];
+                        data.forEach((item) => {
+                            donatList = donatList.concat(item.donations);
+                        });
+                        donatList.forEach((item, index) => {
+                            item.id = index;
+                            item.date = new Date(parseInt(item.donationDate.substr(6)));
+                        });
+                        donatList.sort((a, b) => {
+                            return b.date - a.date;
+                        })
+                        dispatch(fetchDonationsSuccess(donatList));
+                    })
+                
             })
             .catch((error) => {
                 dispatch(fetchDonationsError(error.message));
-            })
+            });
     }
 }

@@ -11,11 +11,11 @@ const initialState = {
 export default function charity(state = initialState, action) {
     switch (action.type) {
         case 'GET_DONATIONS':
-            return {...state};
+            return {...state, loading: true};
         case 'GET_DONATIONS_SUCCESS':
-            return {...state};
+            return {...state, loading: false, donations: action.payload};
         case 'GET_DONATIONS_ERROR':
-            return {...state};
+            return {...state, loading: false, error: action.payload};
         default:
             return state;
     }
