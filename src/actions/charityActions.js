@@ -33,31 +33,32 @@ export function getDonations() {
             return  fetch(`${constants.apiUrl}${constants.appId}/v1/charity/${id}/donations`, 
                         {
                             method: 'GET',
+                            mode: 'cors',
                             headers: {
                                 'Content-Type': 'application/json'
                         }})
         })
-        Promise.all(donations)
-            .then((responses) => {
-                Promise.all(responses.map((resp) => resp.json()))
-                    .then((data) => {
-                        let donatList = [];
-                        data.forEach((item) => {
-                            donatList = donatList.concat(item.donations);
-                        });
-                        donatList.forEach((item, index) => {
-                            item.id = index;
-                            item.date = new Date(parseInt(item.donationDate.substr(6)));
-                        });
-                        donatList.sort((a, b) => {
-                            return b.date - a.date;
-                        })
-                        dispatch(fetchDonationsSuccess(donatList));
-                    })
-                
-            })
-            .catch((error) => {
-                dispatch(fetchDonationsError(error.message));
-            });
+        return Promise.all(donations)
+                .then((responses) => {
+                    return Promise.all(responses.map((resp) => resp.json()))
+                            .then((data) => {
+                                let donatList = [];
+                                data.forEach((item) => {
+                                    donatList = donatList.concat(item.donations);
+                                });
+                                donatList.forEach((item, index) => {
+                                    item.id = index;
+                                    item.date = new Date(parseInt(item.donationDate.substr(6)));
+                                });
+                                donatList.sort((a, b) => {
+                                    return b.date - a.date;
+                                });
+                                dispatch(fetchDonationsSuccess(donatList));
+                            });
+                    
+                })
+                .catch((error) => {
+                    dispatch(fetchDonationsError(error.message));
+                });
     }
 }

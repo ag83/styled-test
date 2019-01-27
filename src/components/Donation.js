@@ -34,6 +34,7 @@ const DonorName = styled.h3`
     font-size: 1.2rem;
     font-weight: bold;
 `;
+DonorName.displayName = 'DonorName';
 
 const ImageContainer = styled.div`
     height: 4rem;
@@ -46,22 +47,26 @@ const ImageContainer = styled.div`
             height: auto;
         }
 `;
+ImageContainer.displayName = 'ImageContainer';
 
 const DonationAmount = styled.div`
     font-size: 2rem;
     margin-bottom: 1.5rem;
 `;
+DonationAmount.displayName = 'DonationAmount';
 
 const DonationMessage = styled.div`
     font-style: italic;
     color: gray;
     margin-bottom: 1rem;
 `;
+DonationMessage.displayName = 'DonationMessage';
 
 const DonationTime = styled.div`
     font-size: 0.8rem;
     color: gray;
 `;
+DonationTime.displayName = 'DonationTime';
 
 export default class Donation extends Component {
 

@@ -24,12 +24,14 @@ const Loading = styled.div`
     font-size: 2rem;
     color: grey;
 `;
+Loading.displayName = 'Loading';
 
-const Error = styled.div`
+const ErrorText = styled.div`
     text-align: center;
     margin: 20% auto;
     color: ${cssConstants.active};
 `;
+ErrorText.displayName = 'ErrorText';
 
 export default class DonationsComponent extends Component {
 
@@ -47,7 +49,7 @@ export default class DonationsComponent extends Component {
                             return <Donation key={donation.id} {...donation}/>
                         })
                      : (
-                        <Error>{this.props.error}</Error>
+                        <ErrorText>{this.props.error}</ErrorText>
                     )
                 ) : (<Loading>loading</Loading>)}
             </DonationsContainer>
